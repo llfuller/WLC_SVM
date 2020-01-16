@@ -1,6 +1,6 @@
 from brian2 import *
 
-
+'''Not used anymore. Connects full biological network. Bio chart. Used in other Github.'''
 def connect_network(conn_params, states, net, train = True):
     G_AL, G_KC, G_GGN, G_BL = states
 
@@ -75,7 +75,7 @@ def connect_network(conn_params, states, net, train = True):
 
 
 
-
+'''Builds just antenna lobe.'''
 def get_AL(AL_params, net, train = True):
     
     N_AL = AL_params['N']

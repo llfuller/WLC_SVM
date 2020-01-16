@@ -1,7 +1,7 @@
 import numpy as np
 import os.path
 from struct import unpack
-import cPickle as pickle
+import pickle
 import brian2.only as br
 from sklearn.utils import shuffle as rshuffle
 
@@ -32,6 +32,7 @@ def createData(run_params, I_arr, states, net, start = 100):
             else:
                 G_AL.I_inj = I_arr[j]+noise*inp*(2*np.random.random(N_AL)-1)*br.nA
 
+            # Create experimental data
             net.run(run_time, report = 'text')
 
             np.save(prefix+'spikes_t_'+str(n) ,spikes_AL.t)
@@ -96,6 +97,69 @@ def mixtures2(run_params, mix_arr, states, net, start = 100):
             lab = 0
             np.save(prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*lab)
             n = n+1
+
+def mixtures3(run_params, mix_arr, states, net, start = 100):
+    assert len(mix_arr) ==3, 'mix_arr must have length 2'
+
+    # Parameters that define the run/simulation
+    num_odors = run_params['num_odors']
+    num_trials = run_params['num_trials']
+    prefix = run_params['prefix']
+    inp = run_params['inp']
+    noise_amp = run_params['noise_amp']
+    run_time = run_params['run_time']
+    N_AL = run_params['N_AL']
+    train = run_params['train']
+
+
+    G_AL = states['G_AL'] # Collection of neurons
+    spikes_AL = states['spikes_AL'] # tracker
+    trace_AL = states['trace_AL'] # tracker
+
+    #I_mix = A*I_1 + B*I_2 + C*I_3 (With C=1-A-B)
+    A_arr = np.linspace(0, 1, num_trials)
+    B_arr = np.linspace(0, 1, num_trials)
+    # Although this is a grid, the actual space evaluated will be a triangle (half the grid)
+    # The reason for this is that only that triangle corresponds to total probability = A + B + C <= 1.
+
+    n = 0 #Counting index
+    if train: # This section is for training (AKA base) odors
+        # Generate measured values for base odors
+        for i in range(num_odors):
+            net.restore()
+            G_AL.I_inj = mix_arr[i]
+            net.run(run_time, report = 'text')
+            np.save(prefix+'spikes_t_'+str(n) ,spikes_AL.t)
+            np.save(prefix+'spikes_i_'+str(n) ,spikes_AL.i)
+            np.save(prefix+'I_'+str(n), G_AL.I_inj)
+            np.save(prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
+            np.save(prefix+'trace_t_'+str(n), trace_AL.t[start:])
+
+            np.save(prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*i)
+            n = n+1
+    else: # This section is for testing (AKA mixed) odors
+        # Generate measured values for base odors
+        for i in range(num_trials):
+            for j in range(num_trials):
+                if A_arr[i]+B_arr[j] <= 1: # Only using normalized probabilities
+                    noise = noise_amp #*np.random.randn()
+                    net.restore()
+                    # I_mix = A*I_1 + B*I_2 + C*I_3 (With C=1-A-B)
+                    I = (A_arr[i])*mix_arr[0]+B_arr[j]*mix_arr[1] + (1-A_arr[i]-B_arr[j])*mix_arr[2]
+                    # Set noisy AL injected current
+                    G_AL.I_inj = I+noise*inp*(2*np.random.random(N_AL)-1)*br.nA # randomly varied mixed currents
+                    # Run network
+                    net.run(run_time, report = 'text') # run network with mixed currents
+                    # Save measured quantities to file
+                    np.save(prefix+'spikes_t_'+str(n) ,spikes_AL.t)
+                    np.save(prefix+'spikes_i_'+str(n) ,spikes_AL.i)
+                    np.save(prefix+'I_'+str(n), G_AL.I_inj)
+                    np.save(prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
+                    np.save(prefix+'trace_t_'+str(n), trace_AL.t[start:])
+
+                    lab = 0
+                    np.save(prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*lab)
+                    n = n+1
 
 def runMNIST(run_params, imgs, states, net):
     num_train = run_params['num_trials']

@@ -41,7 +41,7 @@ inp = 0.15 #input current amplitude
 noise_amp = 0.0 #max noise percentage of inp
 noise_test = 2.0/np.sqrt(3) #NSR = 1/SNR = noise_test*sqrt(3)
 
-num_odors = 2 #total number of odors (classes)
+num_odors = 3 #total number of odors (classes)
 
 num_train = 1 #number of training odors per odor in num_odors
 
@@ -94,7 +94,7 @@ spikes_t_test_arr, spikes_i_test_arr, I_test_arr, test_V_arr, test_t_arr, label_
 pca = True #do PCA on output or not
 
 if pca: #do PCA on the output
-    pca_dim = 2
+    pca_dim = 3
     pca_arr, PCA = anal.doPCA(trace_V_arr, k = pca_dim)
 
     X = np.hstack(pca_arr).T
@@ -173,7 +173,7 @@ if pca and pca_dim == 3:
 see_InCA = False #set to false to skip InCA
 get_mim = True #set to false if computed already
 
-# uncomment these lines to do InCA on the output
+# uncomment these lines to do InCA (Information Component Analysis) on the output
 
 if see_InCA:
     if get_mim: anal.getMIM(tr_prefix, trace_V_arr) #takes a long time
