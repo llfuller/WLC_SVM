@@ -20,12 +20,12 @@ def load_data(prefix, num_runs):
     trace_t_arr = []
     labels_arr = []
     for i in range(num_runs):
-        spikes_t_arr.append(np.load(prefix+'spikes_t_'+str(i)+'.npy'))
-        spikes_i_arr.append(np.load(prefix+'spikes_i_'+str(i)+'.npy'))
-        I_arr.append(np.load(prefix+'I_'+str(i)+'.npy'))
-        trace_V_arr.append(np.load(prefix+'trace_V_'+str(i)+'.npy'))
-        trace_t_arr.append(np.load(prefix+'trace_t_'+str(i)+'.npy'))
-        labels_arr.append(np.load(prefix+'labels_'+str(i)+'.npy'))
+        spikes_t_arr.append(np.load(r""+prefix+'spikes_t_'+str(i)+'.npy'))
+        spikes_i_arr.append(np.load(r""+prefix+'spikes_i_'+str(i)+'.npy'))
+        I_arr.append(np.load(r""+prefix+'I_'+str(i)+'.npy'))
+        trace_V_arr.append(np.load(r""+prefix+'trace_V_'+str(i)+'.npy'))
+        trace_t_arr.append(np.load(r""+prefix+'trace_t_'+str(i)+'.npy'))
+        labels_arr.append(np.load(r""+prefix+'labels_'+str(i)+'.npy'))
 
     return spikes_t_arr, spikes_i_arr, I_arr, trace_V_arr, trace_t_arr, labels_arr
 

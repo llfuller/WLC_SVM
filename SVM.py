@@ -18,8 +18,8 @@ in_AL = .1 #inhibition g_nt in paper
 PAL = 0.5 #probability of connection
 
 #folders in which to save training and testing data
-tr_prefix = 'train/'
-te_prefix = 'test/test_'
+tr_prefix = 'D:Research/WLC_SVM_Data/train/'
+te_prefix = 'D:Research/WLC_SVM_Data/test/test_'
 
 #Antennal Lobe parameters
 al_para = dict(N = N_AL,

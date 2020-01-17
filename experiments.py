@@ -35,13 +35,13 @@ def createData(run_params, I_arr, states, net, start = 100):
             # Create experimental data
             net.run(run_time, report = 'text')
 
-            np.save(prefix+'spikes_t_'+str(n) ,spikes_AL.t)
-            np.save(prefix+'spikes_i_'+str(n) ,spikes_AL.i)
-            np.save(prefix+'I_'+str(n), G_AL.I_inj)
-            np.save(prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
-            np.save(prefix+'trace_t_'+str(n), trace_AL.t[start:])
+            np.save(r""+prefix+'spikes_t_'+str(n) ,spikes_AL.t)
+            np.save(r""+prefix+'spikes_i_'+str(n) ,spikes_AL.i)
+            np.save(r""+prefix+'I_'+str(n), G_AL.I_inj)
+            np.save(r""+prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
+            np.save(r""+prefix+'trace_t_'+str(n), trace_AL.t[start:])
 
-            np.save(prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*j)
+            np.save(r""+prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*j)
             n = n+1
 
 
@@ -70,13 +70,13 @@ def mixtures2(run_params, mix_arr, states, net, start = 100):
             net.restore()
             G_AL.I_inj = mix_arr[i]
             net.run(run_time, report = 'text')
-            np.save(prefix+'spikes_t_'+str(n) ,spikes_AL.t)
-            np.save(prefix+'spikes_i_'+str(n) ,spikes_AL.i)
-            np.save(prefix+'I_'+str(n), G_AL.I_inj)
-            np.save(prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
-            np.save(prefix+'trace_t_'+str(n), trace_AL.t[start:])
+            np.save(r""+prefix+'spikes_t_'+str(n) ,spikes_AL.t)
+            np.save(r""+prefix+'spikes_i_'+str(n) ,spikes_AL.i)
+            np.save(r""+prefix+'I_'+str(n), G_AL.I_inj)
+            np.save(r""+prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
+            np.save(r""+prefix+'trace_t_'+str(n), trace_AL.t[start:])
 
-            np.save(prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*i)
+            np.save(r""+prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*i)
             n = n+1
     else:
         for k in range(num_trials):
@@ -88,14 +88,14 @@ def mixtures2(run_params, mix_arr, states, net, start = 100):
 
             net.run(run_time, report = 'text')
 
-            np.save(prefix+'spikes_t_'+str(n) ,spikes_AL.t)
-            np.save(prefix+'spikes_i_'+str(n) ,spikes_AL.i)
-            np.save(prefix+'I_'+str(n), G_AL.I_inj)
-            np.save(prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
-            np.save(prefix+'trace_t_'+str(n), trace_AL.t[start:])
+            np.save(r""+prefix+'spikes_t_'+str(n) ,spikes_AL.t)
+            np.save(r""+prefix+'spikes_i_'+str(n) ,spikes_AL.i)
+            np.save(r""+prefix+'I_'+str(n), G_AL.I_inj)
+            np.save(r""+prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
+            np.save(r""+prefix+'trace_t_'+str(n), trace_AL.t[start:])
 
             lab = 0
-            np.save(prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*lab)
+            np.save(r""+prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*lab)
             n = n+1
 
 def mixtures3(run_params, mix_arr, states, net, start = 100):
@@ -129,13 +129,13 @@ def mixtures3(run_params, mix_arr, states, net, start = 100):
             net.restore()
             G_AL.I_inj = mix_arr[i]
             net.run(run_time, report = 'text')
-            np.save(prefix+'spikes_t_'+str(n) ,spikes_AL.t)
-            np.save(prefix+'spikes_i_'+str(n) ,spikes_AL.i)
-            np.save(prefix+'I_'+str(n), G_AL.I_inj)
-            np.save(prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
-            np.save(prefix+'trace_t_'+str(n), trace_AL.t[start:])
+            np.save(r""+prefix+'spikes_t_'+str(n) ,spikes_AL.t)
+            np.save(r""+prefix+'spikes_i_'+str(n) ,spikes_AL.i)
+            np.save(r""+prefix+'I_'+str(n), G_AL.I_inj)
+            np.save(r""+prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
+            np.save(r""+prefix+'trace_t_'+str(n), trace_AL.t[start:])
 
-            np.save(prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*i)
+            np.save(r""+prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*i)
             n = n+1
     else: # This section is for testing (AKA mixed) odors
         # Generate measured values for base odors
@@ -151,14 +151,14 @@ def mixtures3(run_params, mix_arr, states, net, start = 100):
                     # Run network
                     net.run(run_time, report = 'text') # run network with mixed currents
                     # Save measured quantities to file
-                    np.save(prefix+'spikes_t_'+str(n) ,spikes_AL.t)
-                    np.save(prefix+'spikes_i_'+str(n) ,spikes_AL.i)
-                    np.save(prefix+'I_'+str(n), G_AL.I_inj)
-                    np.save(prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
-                    np.save(prefix+'trace_t_'+str(n), trace_AL.t[start:])
+                    np.save(r""+prefix+'spikes_t_'+str(n) ,spikes_AL.t)
+                    np.save(r""+prefix+'spikes_i_'+str(n) ,spikes_AL.i)
+                    np.save(r""+prefix+'I_'+str(n), G_AL.I_inj)
+                    np.save(r""+prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
+                    np.save(r""+prefix+'trace_t_'+str(n), trace_AL.t[start:])
 
                     lab = 0
-                    np.save(prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*lab)
+                    np.save(r""+prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*lab)
                     n = n+1
 
 def runMNIST(run_params, imgs, states, net):
@@ -205,13 +205,13 @@ def runMNIST(run_params, imgs, states, net):
             
             net.run(run_time*br.ms, report = 'text')
 
-            np.save(prefix+'spikes_t_'+str(n) ,spikes_AL.t)
-            np.save(prefix+'spikes_i_'+str(n) ,spikes_AL.i)
-            np.save(prefix+'I_'+str(n), I)
-            np.save(prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
-            np.save(prefix+'trace_t_'+str(n), trace_AL.t[start:])
+            np.save(r""+prefix+'spikes_t_'+str(n) ,spikes_AL.t)
+            np.save(r""+prefix+'spikes_i_'+str(n) ,spikes_AL.i)
+            np.save(r""+prefix+'I_'+str(n), I)
+            np.save(r""+prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
+            np.save(r""+prefix+'trace_t_'+str(n), trace_AL.t[start:])
 
-            np.save(prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*y)
+            np.save(r""+prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*y)
             n = n+1
             num_run[y] = num_run[y]+1
         if all(value == num_train for value in num_run.values()):
