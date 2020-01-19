@@ -21,8 +21,8 @@ in_AL = .1 #inhibition g_nt in paper
 PAL = 0.5 #probability of connection
 
 #folders in which to save training and testing data
-tr_prefix = 'D:Research/WLC_SVM_Data/train/'
-te_prefix = 'D:Research/WLC_SVM_Data/test/test_'
+tr_prefix = 'train/'
+te_prefix = 'test/test_'
 
 #Antennal Lobe parameters
 al_para = dict(N = N_AL,
@@ -44,7 +44,7 @@ inp = 0.15 #input current amplitude
 noise_amp = 0.0 #max noise percentage of inp
 noise_test = 0.0 #no noise in the mixtures
 
-num_odors_train = 20 #how many buckets. Base odors.
+num_odors_train = 3 #how many buckets. Base odors.
 num_odors_mix = 2 #mix 2 of the odors together
 
 num_alpha = 20 #values of A in: A*I_1 + (1-A)*I_2
@@ -99,10 +99,8 @@ if (usingMixtures3):
 
 #load in the data from disk
 spikes_t_arr, spikes_i_arr, I_arr, trace_V_arr, trace_t_arr, label_arr = anal.load_data(tr_prefix, num_runs = num_odors_train)
-
-# Create list of alpha and beta which are used in plotting
-# Counter; it's convenient to increment like this rather than save and retrieve a tuple for each (alpha,beta) file
-number_Of_Mix_Runs = 0
+#Counter
+number_Of_Mix_Runs = 0 # necessary to increment like this because it is not known without first dividing the grid up
 listOfAlpha = []
 listOfBeta = []
 for i in range(num_alpha):
@@ -248,27 +246,6 @@ for row in range(len(xAxisArray)):
 figSubplot.plot_surface(xAxisArray, yAxisArray, FitOdor1Array,color='r', edgecolor='none', alpha = 0.3)
 figSubplot.plot_surface(xAxisArray, yAxisArray, FitOdor2Array,color='b', edgecolor='none', alpha = 0.3)
 figSubplot.plot_surface(xAxisArray, yAxisArray, FitOdor3Array,color='y', edgecolor='none', alpha = 0.3)
-
-# print(FitOdor1Array.round(decimals=3).astype(str))
-
-def roundIn1DNumpyArray(npArray, numDecimals):
-    return [("{:."+str(numDecimals)+"e}").format(aNum) for aNum in npArray]
-
-def roundIn2DNumpyArray(npArray, numDecimals):
-    return [[("{:."+str(numDecimals)+"e}").format(aNum) for aNum in aRow] for aRow in npArray]
-
-def writeList(fileName, listName, shapeOfList):
-    with open(fileName, 'w') as fileObj:
-        for row in listName:
-            if shapeOfList == '1D':
-                fileObj.write("%s\n" % row)
-            if shapeOfList == '2D':
-                for colElement in row:
-                    fileObj.write("%s " % colElement)
-                fileObj.write("\n")
-
-allClassificationInfo = np.stack((listOfAlpha, listOfBeta, odor1Proportion, odor2Proportion, odor3Proportion), axis=1)
-writeList('allClassificationInfo.txt',roundIn2DNumpyArray(allClassificationInfo, 3), '2D')
 
 plt.show()
 

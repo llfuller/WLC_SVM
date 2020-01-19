@@ -9,16 +9,3 @@ train - copy/
 test - Copy (2)/
 _pycache/
 .idea/
-odor1Proportion.txt
-odor2Proportion.txt
-odor3Proportion.txt
-xAxisArray.txt
-yAxisArray.txt
-README_MixedOdorPlotFiles.txt
-listOfBeta.txt
-listOfAlpha.txt
-FitOdor3Array.txt
-FitOdor2Array.txt
-FitOdor1Array.txt
-README_mixtures.txt
-allClassificationInfo.txt
