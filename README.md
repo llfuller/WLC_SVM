@@ -5,7 +5,7 @@ We present a novel machine learning architecture for classification suggested by
 
 The main file is SVM.py which builds the WLC network, projects and plots the network activity and classifies various noisy perturbations.  This is the main result of the paper.
 
-mixtures.py presents mixtures of 2 odors and creates the plot found in figure 4 of the paper. It also allows mixtures of 3 odors.
+mixtures.py presents mixtures of 2 odors and creates the plot found in figure 4 of the paper. Mixtures3.py extends this to mixtures of 3 odors.
 
 The rest of the files are for support.
 
