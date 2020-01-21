@@ -45,6 +45,7 @@ def createData(run_params, I_arr, states, net, start = 100):
             n = n+1
 
 
+
 def mixtures2(run_params, mix_arr, states, net, start = 100):
     assert len(mix_arr) ==2, 'mix_arr must have length 2' 
 
@@ -98,8 +99,8 @@ def mixtures2(run_params, mix_arr, states, net, start = 100):
             np.save(prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*lab)
             n = n+1
 
-def mixtures3(run_params, mix_arr, states, net, start = 100):
-    assert len(mix_arr) ==3, 'mix_arr must have length 2'
+def mixtures3(run_params, mixI_arr, comboSet, states, net, start = 100):
+    assert len(mixI_arr) ==3, 'mix_arr must have length 3'
 
     # Parameters that define the run/simulation
     num_odors = run_params['num_odors']
@@ -127,15 +128,15 @@ def mixtures3(run_params, mix_arr, states, net, start = 100):
         # Generate measured values for base odors
         for i in range(num_odors):
             net.restore()
-            G_AL.I_inj = mix_arr[i]
+            G_AL.I_inj = mixI_arr[i]
             net.run(run_time, report = 'text')
-            np.save(prefix+'spikes_t_'+str(n) ,spikes_AL.t)
-            np.save(prefix+'spikes_i_'+str(n) ,spikes_AL.i)
-            np.save(prefix+'I_'+str(n), G_AL.I_inj)
-            np.save(prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
-            np.save(prefix+'trace_t_'+str(n), trace_AL.t[start:])
+            np.save(prefix+'combo_'+str(comboSet)+'_spikes_t_'+str(n) ,spikes_AL.t)
+            np.save(prefix+'combo_'+str(comboSet)+'_spikes_i_'+str(n) ,spikes_AL.i)
+            np.save(prefix+'combo_'+str(comboSet)+'_I_'+str(n), G_AL.I_inj)
+            np.save(prefix+'combo_'+str(comboSet)+'_trace_V_'+str(n), trace_AL.V[:,start:])
+            np.save(prefix+'combo_'+str(comboSet)+'_trace_t_'+str(n), trace_AL.t[start:])
 
-            np.save(prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*i)
+            np.save(prefix+'combo_'+str(comboSet)+'_labels_'+str(n), np.ones(len(trace_AL.t[start:]))*i)
             n = n+1
     else: # This section is for testing (AKA mixed) odors
         # Generate measured values for base odors
@@ -145,20 +146,20 @@ def mixtures3(run_params, mix_arr, states, net, start = 100):
                     noise = noise_amp #*np.random.randn()
                     net.restore()
                     # I_mix = A*I_1 + B*I_2 + C*I_3 (With C=1-A-B)
-                    I = (A_arr[i])*mix_arr[0]+B_arr[j]*mix_arr[1] + (1-A_arr[i]-B_arr[j])*mix_arr[2]
+                    I = (A_arr[i])*mixI_arr[0]+B_arr[j]*mixI_arr[1] + (1-A_arr[i]-B_arr[j])*mixI_arr[2]
                     # Set noisy AL injected current
                     G_AL.I_inj = I+noise*inp*(2*np.random.random(N_AL)-1)*br.nA # randomly varied mixed currents
                     # Run network
                     net.run(run_time, report = 'text') # run network with mixed currents
                     # Save measured quantities to file
-                    np.save(prefix+'spikes_t_'+str(n) ,spikes_AL.t)
-                    np.save(prefix+'spikes_i_'+str(n) ,spikes_AL.i)
-                    np.save(prefix+'I_'+str(n), G_AL.I_inj)
-                    np.save(prefix+'trace_V_'+str(n), trace_AL.V[:,start:])
-                    np.save(prefix+'trace_t_'+str(n), trace_AL.t[start:])
+                    np.save(prefix+'combo_'+str(comboSet)+'_spikes_t_'+str(n) ,spikes_AL.t)
+                    np.save(prefix+'combo_'+str(comboSet)+'_spikes_i_'+str(n) ,spikes_AL.i)
+                    np.save(prefix+'combo_'+str(comboSet)+'_I_'+str(n), G_AL.I_inj)
+                    np.save(prefix+'combo_'+str(comboSet)+'_trace_V_'+str(n), trace_AL.V[:,start:])
+                    np.save(prefix+'combo_'+str(comboSet)+'_trace_t_'+str(n), trace_AL.t[start:])
 
                     lab = 0
-                    np.save(prefix+'labels_'+str(n), np.ones(len(trace_AL.t[start:]))*lab)
+                    np.save(prefix+'combo_'+str(comboSet)+'_labels_'+str(n), np.ones(len(trace_AL.t[start:]))*lab)
                     n = n+1
 
 def runMNIST(run_params, imgs, states, net):

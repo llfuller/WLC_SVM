@@ -9,3 +9,4 @@ train - copy/
 test - Copy (2)/
 _pycache/
 .idea/
+*.txt
