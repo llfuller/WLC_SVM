@@ -102,11 +102,11 @@ np.savetxt('baseNumbersUsed.txt', baseNum)
 #==============================================================================================================
 # Run Base Odor and Mixture Odor Simulations
 #==============================================================================================================
-# ex.createData(run_params_train, I_arr, states, net) # base odors
-# for rowNum, aCombo in enumerate(baseNum):
-#     ex.mixtures3(run_params_test,  [I_arr[aCombo[0]],
-#                                    I_arr[aCombo[1]],
-#                                    I_arr[aCombo[2]]], rowNum, states, net) # mixture odors
+ex.createData(run_params_train, I_arr, states, net) # base odors
+for rowNum, aCombo in enumerate(baseNum):
+    ex.mixtures3(run_params_test,  [I_arr[aCombo[0]],
+                                   I_arr[aCombo[1]],
+                                   I_arr[aCombo[2]]], rowNum, states, net) # mixture odors
 
 #==============================================================================================================
 # Load in Base and Mixture Data
@@ -176,13 +176,15 @@ for rowNum, aCombo in enumerate(baseNum):
     # The following comment numbers follow from num_alpha=20 with three base odors and two parameters (alpha and beta)
     for i in range(len(test_data)): # for i from 0 to 210 inclusive, that is for all mixed odors individually
         pred = clf.predict(test_data[i].T) # attempt to classify mixed odors; dim=(2300,); test_data has shape (210,1000,2300) where 210 is number of test (AKA mixed) odors
+        print("PREDICTION")
+        print(pred)
         # so for this mixed odor i, clf.predict will predict using a (1000,2300) matrix for each time point (second index) what base odor it belongs to.
         total_pred = stats.mode(pred)[0] # dim=(1,); stats.mode(pred) has shape (2,1); index 0 returns mode instead of number of counts of mode.
         pred_arr.append(total_pred) # dim=(210,1) after loop is done, where 210 is the number of alpha beta grid points in plot.
         # One base odor classification mode per test mixture
 
-        # histogram has dimension (num_odors_train,)=(3,)
-        # dim=(210,3) after loop is done, where 210 is the number of alpha beta grid points in plot.
+        # histogram has dimension (num_odors_train,)=(20,)
+        # dim=(210,20) after loop is done, where 210 is the number of alpha beta grid points in plot.
         A_arr.append(np.histogram(pred, bins = np.arange(num_odors_train+1))[0])
         # Adds histogram (which is the 0th component) of object for each mix
         # This is dimension (mixed, base). It shows how much of the mixed is identified as each base
@@ -191,11 +193,11 @@ for rowNum, aCombo in enumerate(baseNum):
     print("LENGTH of pred_arr: "+str(np.shape(pred_arr)))
     print("LENGTH of A_arr: "+str(np.shape(A_arr)))
 
-    A_arr = np.array(A_arr)/np.sum(A_arr[0]) #alpha array; dim (210,3); from 0 to 1, the proportion of
+    A_arr = np.array(A_arr)/np.sum(A_arr[0]) #alpha array; dim (210,20); from 0 to 1, the proportion of
     # each of the 2300 dots in time series for each specific mixture (row) identified as the base odor (column)
     # Normalized by mixed odor 1 sum because it doesn't matter which one we choose (adds to 2300, the number of time points)
 
-    np.savetxt(tr_prefix+'alpha_histogram.txt', A_arr, fmt = '%1.3f')
+    np.savetxt(tr_prefix+'combo_'+str(rowNum)+'_'+'alpha_histogram.txt', A_arr, fmt = '%1.3f')
     expected = y_test
     predicted = np.array(pred_arr)
 
