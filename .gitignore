@@ -11,3 +11,8 @@ _pycache/
 .idea/
 *.txt
 *.png
+experiments_multiproc.py
+mixtures3_multiproc.py
+mixtures3_multiproc.py
+mixtures3_multiproc.py
+mixtures3_multiproc.py

@@ -81,6 +81,7 @@ run_params_test = dict(num_odors=num_odors_mix,
                        N_AL=N_AL,
                        train=False)
 
+
 #==============================================================================================================
 # Create Base Odors' Currents
 #==============================================================================================================
@@ -241,8 +242,9 @@ for rowNum, aCombo in enumerate(baseNum):
         return np.array([np.divide(A_term,Z), np.divide(B_term,Z), np.divide(C_term,Z)])
 
     # For plotting: Full alpha and beta range (square)
-    xAxisArray = 1-np.outer(np.linspace(1,0,2*num_alpha), np.ones(2*num_alpha))
+    xAxisArray = np.outer(np.linspace(0,1,2*num_alpha), np.ones(2*num_alpha))
     yAxisArray = xAxisArray.copy().T
+
 
     # Need one surface fit for each base odor probability distribution over alpha and beta
     # These parameters are set by hand but can be tuned by a computer algorithm if necessary.
@@ -251,7 +253,8 @@ for rowNum, aCombo in enumerate(baseNum):
     c = 20
     # Calculate softmax fit at each parameter point (alpha, beta)
     FitOdor1Array, FitOdor2Array, FitOdor3Array = softMaxProbability(xAxisArray, yAxisArray, a,b,c)
-    # each ProbOdor array has dim = (40,40)
+    # each FitOdor(NUM)Array array has dim = (40,40)
+    print(np.shape(FitOdor1Array))
 
     # Remove prediction for (alpha, beta) not in valid range [0,1] so that unnecessary mesh is not plotted
     for row in range(len(xAxisArray)):
@@ -268,6 +271,22 @@ for rowNum, aCombo in enumerate(baseNum):
     figSubplot.plot_surface(xAxisArray, yAxisArray, FitOdor3Array,color='y', edgecolor='none', alpha = 0.3)
     print("Finished with " + str(rowNum))
 
+    #==============================================================================================================
+    # Saving SVM Result and Fits
+    #==============================================================================================================
+    # Outputting data for easy plotting with an external program
+    FitOdor1Array_Ordered = softMaxProbability(np.array(listOfAlpha), np.array(listOfBeta), a,b,c)[0]
+    FitOdor2Array_Ordered = softMaxProbability(np.array(listOfAlpha), np.array(listOfBeta), a, b, c)[1]
+    FitOdor3Array_Ordered = softMaxProbability(np.array(listOfAlpha), np.array(listOfBeta), a, b, c)[2]
+    print("===========FitOdor1Array_Ordered===================")
+    # print(FitOdor1Array_Ordered)
+    print(np.shape(FitOdor1Array_Ordered))
+    print("===========MixedOdorData_Combo=====================")
+    dataFileName = "mixture3OutputFolder/MixedOdorData_Combo"+str(rowNum)+".txt"
+    dataList = np.stack((listOfAlpha,listOfBeta,odor1Proportion,FitOdor1Array_Ordered),axis=1)
+    # print(dataList)
+    print(np.shape(dataList))
+    np.savetxt(dataFileName, dataList, fmt='%1.3e')
 plt.show()
 
 # plt.savefig('mixtures.pdf', bbox = 'tight')
